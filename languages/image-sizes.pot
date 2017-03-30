@@ -1,0 +1,37 @@
+# Copyright (C) 2017 artcom venture GmbH
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Image Sizes\n"
+"Report-Msgid-Bugs-To: info@artcom-venture.de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: artcom venture GmbH <info@artcom-venture.de>\n"
+"Language-Team: artcom venture GmbH <info@artcom-venture.de>\n"
+"Language: de_DE\n"
+
+msgid "%s size"
+msgstr ""
+
+msgid "Be aware that the following image sizes have their dimension for a reason<br />... so be <i>careful</i> changing them and always check the output."
+msgstr ""
+
+msgid "Crop this image size to exact dimensions"
+msgstr ""
+
+msgid "Edit all available image sizes."
+msgstr ""
+
+msgid "If you change any setting below, you must regenerate the images to apply the changes to already uploaded images."
+msgstr ""
+
+msgid "Image Sizes"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Regenerate Images"
+msgstr ""

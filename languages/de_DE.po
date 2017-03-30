@@ -1,0 +1,37 @@
+# Copyright (C) 2017 artcom venture GmbH
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Image Sizes\n"
+"Report-Msgid-Bugs-To: info@artcom-venture.de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: artcom venture GmbH <info@artcom-venture.de>\n"
+"Language-Team: artcom venture GmbH <info@artcom-venture.de>\n"
+"Language: de_DE\n"
+
+msgid "%s size"
+msgstr "%s Größe"
+
+msgid "Be aware that the following image sizes have their dimension for a reason<br />... so be <i>careful</i> changing them and always check the output."
+msgstr "Sei dir bewusst, dass die folgenden Bildgrößen ihre Dimensionen aus einem Grund haben<br />... also sei <i>vorsichtig</i>, sie zu ändern und überprüfe immer die Ausgabe."
+
+msgid "Crop this image size to exact dimensions"
+msgstr "Auf die exakte Größe beschneiden"
+
+msgid "Edit all available image sizes."
+msgstr "Bearbeite alle verfügbaren Bildgrößen."
+
+msgid "If you change any setting below, you must regenerate the images to apply the changes to already uploaded images."
+msgstr "Wenn du eine der u.g. Einstellungen änderst, musst du die bereits hochgeladenen Bilder neu generieren lassen um die Änderungen anzuwenden."
+
+msgid "Image Sizes"
+msgstr "Bildergrößen"
+
+msgid "Note"
+msgstr "Hinweis"
+
+msgid "Regenerate Images"
+msgstr "Bilder neu erstellen"

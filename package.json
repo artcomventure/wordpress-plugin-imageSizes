@@ -1,0 +1,33 @@
+{
+  "name": "wordpress-plugin-imageSizes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artcomventure/wordpress-plugin-imageSizes.git"
+  },
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-gettext": "^0.3.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-replace": "^0.5.4"
+  },
+  "description": "Edit all available image sizes.",
+  "bugs": {
+    "url": "https://github.com/artcomventure/wordpress-plugin-imageSizes/issues"
+  },
+  "homepage": "https://github.com/artcomventure/wordpress-plugin-imageSizes#readme",
+  "version": "1.0.0",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Stefan Käsche",
+    "email": "stefan.kaesche@artcom-venture.de",
+    "url": "https://www.artcom-venture.de"
+  }
+}

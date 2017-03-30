@@ -1,8 +1,21 @@
-# WordPress Image Sizes
+=== Image Sizes ===
+
+Contributors:
+Donate link:
+Tags: Media, Images, Thumbnails
+Requires at least:
+Tested up to:
+Stable tag:
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Edit all available image sizes.
 
-## Installation
+== Description ==
+
+Edit all available image sizes.
+
+== Installation ==
 
 1. Upload files to the `/wp-content/plugins/` directory of your WordPress installation.
   * Either [download the latest files](https://github.com/artcomventure/wordpress-plugin-imageSizes/archive/master.zip) and extract zip (optionally rename folder)
@@ -18,17 +31,17 @@ Edit all available image sizes.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. **Enjoy**
 
-## Usage
+== Usage ==
 
 You can find all additional settings on the 'Media' options page listed in the submenu of 'Settings'.
 
-###Note
+=== Note ===
 
 If you change any settings, you must regenerate the images to apply the changes **to already uploaded images**.
 
 Since in-plugin image regeneration is not implemented yet, you must use a third-party plugin for this like [Regenerate Thumbnails](https://de.wordpress.org/plugins/regenerate-thumbnails/).
 
-## Plugin Updates
+== Plugin Updates ==
 
 Although the plugin is not _yet_ listed on https://wordpress.org/plugins/, you can use WordPress' update functionality to keep it in sync with the files from [GitHub](https://github.com/artcomventure/wordpress-plugin-imageSizes).
 
@@ -39,6 +52,18 @@ Although the plugin is not _yet_ listed on https://wordpress.org/plugins/, you c
 
 _We test our plugin through its paces, but we advise you to take all safety precautions before the update. Just in case of the unexpected._
 
-## Questions, concerns, needs, suggestions?
+== Questions, concerns, needs, suggestions? ==
 
 Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-imageSizes/issues) welcome.
+
+== Changelog ==
+
+= Unreleased =
+
+* add image sizes
+* regenerate images
+
+= 1.0.0 - 2017-03-30 =
+**Added**
+
+* Inititial file commit
