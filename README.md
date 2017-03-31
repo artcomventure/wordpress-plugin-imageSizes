@@ -20,9 +20,11 @@ Edit all available image sizes.
 
 ## Usage
 
-You can find all additional settings on the 'Media' options page listed in the submenu of 'Settings'.
+You can find all _additional_ settings (sizes, cropping, reset) on the 'Media' options page listed in the submenu of 'Settings'.
 
-###Note
+![image](assets/screenshot-1.png)
+
+### Note
 
 If you change any settings, you must regenerate the images to apply the changes **to already uploaded images**.
 

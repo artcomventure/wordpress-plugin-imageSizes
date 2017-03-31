@@ -4,7 +4,7 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -18,25 +18,30 @@
  *
  * @return array
  */
-function image_sizes_get_image_sizes( $defaults = false ) {
+function imagesizes_get_image_sizes( $defaults = false ) {
 	global $_wp_additional_image_sizes;
 
 	// @see ROOT/wp-admin/includes/schema.php
 	$default_sizes = array(
-		'medium' => array(
-			'width' => 300,
+		'thumbnail'    => array(
+			'width'  => 150,
+			'height' => 150,
+			'crop'   => true
+		),
+		'medium'       => array(
+			'width'  => 300,
 			'height' => 300,
-			'crop' => false
+			'crop'   => false
 		),
 		'medium_large' => array(
-			'width' => 768,
+			'width'  => 768,
 			'height' => 0,
-			'crop' => false
+			'crop'   => false
 		),
-		'large' => array(
-			'width' => 1024,
+		'large'        => array(
+			'width'  => 1024,
 			'height' => 1024,
-			'crop' => false
+			'crop'   => false
 		),
 	);
 
@@ -44,7 +49,7 @@ function image_sizes_get_image_sizes( $defaults = false ) {
 
 	foreach ( get_intermediate_image_sizes() as $image_size ) {
 		// ignore
-		if ( in_array( $image_size, array( 'thumbnail', 'post-thumbnail' ) ) ) {
+		if ( in_array( $image_size, array( 'thumbnail' ) ) ) {
 			continue;
 		}
 
@@ -54,9 +59,9 @@ function image_sizes_get_image_sizes( $defaults = false ) {
 			'large'
 		) ) ) {
 			$image_sizes[ $image_size ] = array(
-				'width'  => ( $defaults ? $default_sizes['width'] : get_option( "{$image_size}_size_w" ) ),
-				'height' => ( $defaults ? $default_sizes['height'] : get_option( "{$image_size}_size_h" ) ),
-				'crop'   => ( $defaults ? $default_sizes['crop'] : (bool) get_option( "{$image_size}_crop" ) )
+				'width'  => ( $defaults ? $default_sizes[ $image_size ]['width'] : get_option( "{$image_size}_size_w" ) ),
+				'height' => ( $defaults ? $default_sizes[ $image_size ]['height'] : get_option( "{$image_size}_size_h" ) ),
+				'crop'   => ( $defaults ? $default_sizes[ $image_size ]['crop'] : (bool) get_option( "{$image_size}_crop" ) )
 			);
 		} elseif ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
 			// default values
@@ -67,12 +72,17 @@ function image_sizes_get_image_sizes( $defaults = false ) {
 			);
 
 			// current values
-			if ( !$defaults ) {
-				$image_sizes[ $image_size ]['width'] = get_option( "{$image_size}_size_w", $image_sizes[ $image_size ]['width'] );
+			if ( ! $defaults ) {
+				$image_sizes[ $image_size ]['width']  = get_option( "{$image_size}_size_w", $image_sizes[ $image_size ]['width'] );
 				$image_sizes[ $image_size ]['height'] = get_option( "{$image_size}_size_h", $image_sizes[ $image_size ]['height'] );
-				$image_sizes[ $image_size ]['crop'] = (bool) get_option( "{$image_size}_crop", $image_sizes[ $image_size ]['crop'] );
+				$image_sizes[ $image_size ]['crop']   = (bool) get_option( "{$image_size}_crop", $image_sizes[ $image_size ]['crop'] );
 			}
 		}
+	}
+
+	if ( $defaults ) {
+		// add 'thumbnail' defaults
+		$image_sizes += $default_sizes;
 	}
 
 	return $image_sizes;
@@ -81,8 +91,8 @@ function image_sizes_get_image_sizes( $defaults = false ) {
 /**
  * Implements action 'after_setup_theme'.
  */
-add_action( 'after_setup_theme', 'image_sizes__after_setup_theme' );
-function image_sizes__after_setup_theme() {
+add_action( 'after_setup_theme', 'imagesizes__after_setup_theme' );
+function imagesizes__after_setup_theme() {
 	// t9n
 	load_theme_textdomain( 'image-sizes', plugin_dir_path( __FILE__ ) . 'languages' );
 }
@@ -90,20 +100,20 @@ function image_sizes__after_setup_theme() {
 /**
  * Register crop settings for image sizes.
  */
-add_action( 'admin_init', 'image_sizes__admin_init', 100 );
-function image_sizes__admin_init() {
+add_action( 'admin_init', 'imagesizes__admin_init', 100 );
+function imagesizes__admin_init() {
 	// notice to regenerate the thumbnails
 	add_settings_field( 'image-sizes-note', '', function () {
-		image_sizes_notice( __( 'Be aware that the following image sizes have their dimension for a reason<br />... so be <i>careful</i> changing them and always check the output.', 'image-sizes' ) );
+		imagesizes_notice( __( 'Be aware that the following image sizes have their dimension for a reason<br />... so be <i>careful</i> changing them and always check the output.', 'image-sizes' ) );
 
-		image_sizes_notice(
+		imagesizes_notice(
 			sprintf( __( 'If you change any setting below, you must regenerate the images to apply the changes to already uploaded images.', 'image-sizes' ), '' ),
 			'info',
 			false
 		);
 	}, 'media' );
 
-	foreach ( image_sizes_get_image_sizes() as $image_size => $settings ) {
+	foreach ( imagesizes_get_image_sizes() as $image_size => $settings ) {
 		// override image sizes
 		add_image_size( $image_size, get_option( "{$image_size}_size_w", $settings['width'] ), get_option( "{$image_size}_size_h", $settings['height'] ), $settings['crop'] );
 
@@ -156,44 +166,78 @@ function image_sizes__admin_init() {
 	}
 
 	// notice to regenerate the thumbnails
-	add_settings_field( 'image-sizes-crop', '', function () { ?>
+	add_settings_field( 'image-sizes-crop', __( 'Reset', 'image-sizes' ), function () { ?>
+
+		<a href="#reset-all" class="button"
+		   data-image_size=""><?php _e( 'Reset all image sizes', 'image-sizes' ) ?></a>
 
 		<script type="text/javascript">
-			// add crop option to image sizes
-			var crop = {
-				<?php $crop = array();
-					foreach ( image_sizes_get_image_sizes() as $size_image => $settings ) {
-						$crop[] = "\n            '{$size_image}': " . ( $settings['crop'] ? 1 : 0 );
-					};
-					echo implode( ', ', $crop ) . "\n"; ?>
-			};
+			(function () {
+				// immediately add crop option and reset button to image sizes
+				var crop = {
+					'thumbnail': <?php echo get_option( 'thumbnail_crop' ) ? 1 : 0 ?>,
+					<?php $crop = array();
+						foreach ( imagesizes_get_image_sizes() as $image_size => $settings ) {
+							$crop[] = "\n            '{$image_size}': " . ( $settings['crop'] ? 1 : 0 );
+						};
+						echo implode( ', ', $crop ) . "\n"; ?>
+				};
 
-			for ( var size in crop ) {
-				if ( !crop.hasOwnProperty( size ) ) continue;
+				for ( var size in crop ) {
+					if ( !crop.hasOwnProperty( size ) ) continue;
 
-				var $heightInput = document.getElementById( size + '_size_h' );
-				if ( !$heightInput ) continue;
+					var $heightInput = document.getElementById( size + '_size_h' );
+					if ( !$heightInput ) continue;
 
-				if ( crop[size] ) {
-					var $label = document.querySelector( '[for="' + size + '_size_w"]' );
-					$label.innerHTML = '<?php _e( 'Width' ) ?>';
+					var $wrapper = document.createElement( 'div' );
 
-					$label = document.querySelector( '[for="' + size + '_size_h"]' );
-					$label.innerHTML = '<?php _e( 'Height' ) ?>';
+					if ( size != 'thumbnail' ) {
+						if ( crop[size] ) {
+							var $label = document.querySelector( '[for="' + size + '_size_w"]' );
+							$label.innerHTML = '<?php _e( 'Width' ) ?>';
+
+							$label = document.querySelector( '[for="' + size + '_size_h"]' );
+							$label.innerHTML = '<?php _e( 'Height' ) ?>';
+						}
+
+						$heightInput.parentNode.appendChild( document.createElement( 'br' ) );
+
+						// 'create' and append checkbox
+						$wrapper.innerHTML = '<input name="' + size + '_crop" type="checkbox" id="' + size + '_crop" value="1"' + ( crop[size] ? ' checked="checked"' : '' ) + '/>';
+						$heightInput.parentNode.appendChild( $wrapper.children[0] );
+
+						// 'create' and append label
+						$wrapper.innerHTML = '<label for="' + size + '_crop"><?php _e( 'Crop this image size to exact dimensions', 'image-sizes' ); ?></label>';
+						$heightInput.parentNode.appendChild( $wrapper.children[0] );
+					}
+
+					// 'create' and append reset button
+					$heightInput.parentNode.appendChild( document.createElement( 'br' ) );
+					$wrapper.innerHTML = '<a href="#reset-' + size + '" class="button" data-image_size="' + size + '" style="margin-top: .5em"><?php _e( 'Reset to default', 'image-sizes' ) ?></a>';
+					$heightInput.parentNode.appendChild( $wrapper.children[0] );
 				}
 
-				$heightInput.parentNode.appendChild( document.createElement( 'br' ) );
+				var request = new XMLHttpRequest();
 
-				var $wrapper = document.createElement( 'div' );
+				Array.prototype.forEach.call( document.querySelectorAll( 'a[data-image_size]' ), function ( $reset ) {
+					$reset.addEventListener( 'click', function ( e ) {
+						e.preventDefault();
 
-				// 'create' and append checkbox
-				$wrapper.innerHTML = '<input name="' + size + '_crop" type="checkbox" id="' + size + '_crop" value="1"' + ( crop[size] ? ' checked="checked"' : '' ) + '/>';
-				$heightInput.parentNode.appendChild( $wrapper.children[0] );
+						request.open( 'GET', '<?php echo admin_url( 'admin-ajax.php' ) ?>'
+						+ '?action=imagesizes_reset'
+						+ '&image_size=' + this.getAttribute( 'data-image_size' ) );
 
-				// 'create' and append label
-				$wrapper.innerHTML = '<label for="' + size + '_crop"><?php _e( 'Crop this image size to exact dimensions', 'image-sizes' ); ?></label>';
-				$heightInput.parentNode.appendChild( $wrapper.children[0] );
-			}
+						request.onreadystatechange = function () {
+							if ( this.readyState === 4 ) {
+								location.reload();
+							}
+						};
+
+						request.send();
+					} );
+				} );
+
+			})();
 		</script>
 
 	<?php }, 'media' );
@@ -206,7 +250,7 @@ function image_sizes__admin_init() {
  *
  * @return string
  */
-function get_image_sizes_notice( $message = '', $type = 'info', $inline = true ) {
+function get_imagesizes_notice( $message = '', $type = 'info', $inline = true ) {
 	return sprintf( '<div class="notice notice-%1$s ' . ( $inline ? 'inline' : 'is-dismissible' ) . '"><p>%2$s</p></div>', esc_attr( $type ), $message );
 }
 
@@ -217,6 +261,63 @@ function get_image_sizes_notice( $message = '', $type = 'info', $inline = true )
  *
  * @return string
  */
-function image_sizes_notice( $message = '', $type = 'info', $inline = true ) {
-	echo get_image_sizes_notice( $message, $type, $inline );
+function imagesizes_notice( $message = '', $type = 'info', $inline = true ) {
+	echo get_imagesizes_notice( $message, $type, $inline );
+}
+
+/**
+ * Delete traces in db on deactivation or reset.
+ */
+add_action( 'wp_ajax_imagesizes_reset', 'imagesizes_deactivate' );
+add_action( 'wp_ajax_nopriv_imagesizes_reset', 'imagesizes_deactivate' );
+register_deactivation_hook( __FILE__, 'imagesizes_deactivate' );
+function imagesizes_deactivate() {
+	$reset = NULL; // deactivate
+	// ... or reset
+	if ( isset( $_GET['action'] ) && $_GET['action'] == 'imagesizes_reset' ) {
+		$reset = isset( $_GET['image_size'] ) ? $_GET['image_size'] : '';
+	}
+
+	foreach ( imagesizes_get_image_sizes( true ) as $image_size => $settings ) {
+		if ( ! is_null( $reset ) && ( $reset && $image_size != $reset ) ) {
+			continue;
+		}
+
+		if ( $image_size == 'thumbnail' ) {
+			if ( ! is_null( $reset ) ) {
+				// only reset thumbnail's crop on reset-action
+				update_option( "{$image_size}_crop", $settings['crop'] );
+			}
+		}
+		// delete all '*_crop' options (but thumbnail's)
+		// because they are plugin releated
+		else {
+			delete_option( "{$image_size}_crop" );
+		}
+
+		// don't reset these image sizes on deactivation
+		// because they are WP-editable
+		if ( is_null( $reset ) && in_array( $image_size, array(
+				'thumbnail',
+				'medium',
+				'large'
+			) )
+		) {
+			return;
+		}
+
+		// reset default
+		if ( in_array( $image_size, array(
+			'thumbnail',
+			'medium',
+			'medium_large',
+			'large'
+		) ) ) {
+			update_option( "{$image_size}_size_w", $settings['width'] );
+			update_option( "{$image_size}_size_h", $settings['height'] );
+		} else {
+			delete_option( "{$image_size}_size_w" );
+			delete_option( "{$image_size}_size_h" );
+		}
+	}
 }

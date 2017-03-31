@@ -35,3 +35,12 @@ msgstr ""
 
 msgid "Regenerate Images"
 msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Reset all image sizes"
+msgstr ""
+
+msgid "Reset to default"
+msgstr ""

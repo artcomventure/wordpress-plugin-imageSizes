@@ -35,3 +35,12 @@ msgstr "Hinweis"
 
 msgid "Regenerate Images"
 msgstr "Bilder neu erstellen"
+
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+msgid "Reset all image sizes"
+msgstr "Alle Bildgrößen auf Standard zurücksetzen"
+
+msgid "Reset to default"
+msgstr "Standardwerte zurücksetzen"

@@ -33,7 +33,7 @@ Edit all available image sizes.
 
 == Usage ==
 
-You can find all additional settings on the 'Media' options page listed in the submenu of 'Settings'.
+You can find all _additional_ settings (sizes, cropping, reset) on the 'Media' options page listed in the submenu of 'Settings'.
 
 === Note ===
 
@@ -63,7 +63,12 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-image
 * add image sizes
 * regenerate images
 
+= 1.1.0 - 2017-03-31 =
+**Added**
+
+* Reset image sizes.
+
 = 1.0.0 - 2017-03-30 =
 **Added**
 
-* Inititial file commit
+* Initial file commit.
