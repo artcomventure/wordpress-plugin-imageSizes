@@ -13,7 +13,11 @@ Edit all available image sizes.
 
 == Description ==
 
-Edit all available image sizes.
+Get access (capability: manage_options) to all image sizes and edit their dimensions for your purpose.
+
+You can also define whether to crop images to specified width and height or resize.
+
+Last but not least: regenerate your images after changing any image size setting to apply these changes to already uploaded images.
 
 == Installation ==
 
@@ -33,13 +37,11 @@ Edit all available image sizes.
 
 == Usage ==
 
-You can find all _additional_ settings (sizes, cropping, reset) on the 'Media' options page listed in the submenu of 'Settings'.
+You can find all _additional_ settings (sizes, cropping, reset, regenerate) on the 'Media' options page listed in the submenu of 'Settings'.
 
 === Note ===
 
 If you change any settings, you must regenerate the images to apply the changes **to already uploaded images**.
-
-Since in-plugin image regeneration is not implemented yet, you must use a third-party plugin for this like [Regenerate Thumbnails](https://de.wordpress.org/plugins/regenerate-thumbnails/).
 
 == Plugin Updates ==
 
@@ -61,12 +63,17 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-image
 = Unreleased =
 
 * add image sizes
-* regenerate images
+* regenerate single image
+
+= 1.2.0 - 2017-04-03 =
+**Added**
+
+* Regenerate images (all or by image size).
 
 = 1.1.0 - 2017-03-31 =
 **Added**
 
-* Reset image sizes.
+* Reset option.
 
 = 1.0.0 - 2017-03-30 =
 **Added**

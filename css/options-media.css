@@ -1,0 +1,101 @@
+.form-table
+{
+    table-layout: fixed;
+}
+
+.form-table tr:first-child td p
+{
+    margin-top: 10px;
+}
+
+.image-size__actions .button:before
+{
+    font: 400 1.25em/1 dashicons;
+    display: inline-block;
+    float: left;
+    margin: 5px .28em 0 0;
+}
+
+.image-size__actions .button.done:before
+{
+    content: '\f147';
+    color: #79ba49;
+}
+
+.image-size__actions .button.pending
+{
+    pointer-events: none;
+}
+
+.image-size__actions .button.pending:before
+{
+    content: '\f463';
+    animation: rotation 2s infinite linear;
+    color: #555;
+}
+
+.image-size__actions.progress-bar,
+.image-size__actions .progress
+{
+    overflow: hidden;
+}
+
+.image-size__actions.progress-bar:not(:empty),
+.image-size__actions .progress:not(:empty)
+{
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.image-size__actions.progress-bar
+{
+    line-height: 27px;
+    position: relative;
+    white-space: nowrap;
+    background-color: rgba(0, 0, 0, .15);
+}
+@media (min-width: 783px)
+{
+    .image-size__actions.progress-bar
+    {
+        font-size: 11px;
+        line-height: 24px;
+    }
+}
+
+.image-size__actions.progress-bar .progress
+{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box; 
+    width: 0;
+    transition: width .2s;
+    color: #fff;
+    background-color: #79ba49;
+}
+@media (max-width: 782px)
+{
+    .image-size__actions.progress-bar .progress
+    {
+        line-height: 31px;
+    }
+}
+
+.image-size__actions.progress-bar .button
+{
+    font-size: 11px;
+    line-height: 22px;
+    visibility: hidden;
+    width: 1px;
+    height: 24px;
+}
+
+.image-size__actions:not(.progress-bar) .progress,
+.image-size__actions:not(.progress-bar) .status
+{
+    display: none;
+}
+
+/*# sourceMappingURL=options-media.css.map */

@@ -4,11 +4,24 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
  */
+
+/**
+ * Add css.
+ */
+add_action( 'admin_enqueue_scripts', 'imagesizes_admin_style' );
+function imagesizes_admin_style() {
+	global $pagenow;
+	if ( $pagenow != 'options-media.php' ) {
+		return;
+	}
+
+	wp_enqueue_style( 'imagesize-options-media', plugin_dir_url( __FILE__ ) . 'css/options-media.css' );
+}
 
 /**
  * Get 'all' image sizes and its default settings.
@@ -104,13 +117,7 @@ add_action( 'admin_init', 'imagesizes__admin_init', 100 );
 function imagesizes__admin_init() {
 	// notice to regenerate the thumbnails
 	add_settings_field( 'image-sizes-note', '', function () {
-		imagesizes_notice( __( 'Be aware that the following image sizes have their dimension for a reason<br />... so be <i>careful</i> changing them and always check the output.', 'image-sizes' ) );
-
-		imagesizes_notice(
-			sprintf( __( 'If you change any setting below, you must regenerate the images to apply the changes to already uploaded images.', 'image-sizes' ), '' ),
-			'info',
-			false
-		);
+		imagesizes_notice( __( 'Be aware that the following image sizes have their dimension for a <i>reason</i><br />... so be <i>careful</i> changing them and always check the output.', 'image-sizes' ) );
 	}, 'media' );
 
 	foreach ( imagesizes_get_image_sizes() as $image_size => $settings ) {
@@ -166,10 +173,17 @@ function imagesizes__admin_init() {
 	}
 
 	// notice to regenerate the thumbnails
-	add_settings_field( 'image-sizes-crop', __( 'Reset', 'image-sizes' ), function () { ?>
+	add_settings_field( 'image-sizes-actions', strtoupper( __( 'Action for all image sizes', 'image-sizes' ) ), function () { ?>
 
-		<a href="#reset-all" class="button"
-		   data-image_size=""><?php _e( 'Reset all image sizes', 'image-sizes' ) ?></a>
+		<p class="image-size__actions">
+			<span class="progress"></span>
+			<span class="status"></span>
+			<a href="#regenerate-all" class="button"
+			   data-image_size=""><?php _e( 'Regenerate all images', 'image-sizes' ) ?></a>
+
+			<a href="#reset-all" class="button"
+			   data-image_size=""><?php _e( 'Reset all to default', 'image-sizes' ) ?></a>
+		</p>
 
 		<script type="text/javascript">
 			(function () {
@@ -189,7 +203,7 @@ function imagesizes__admin_init() {
 					var $heightInput = document.getElementById( size + '_size_h' );
 					if ( !$heightInput ) continue;
 
-					var $wrapper = document.createElement( 'div' );
+					var $wrapper = document.createElement( 'p' );
 
 					if ( size != 'thumbnail' ) {
 						if ( crop[size] ) {
@@ -212,28 +226,153 @@ function imagesizes__admin_init() {
 					}
 
 					// 'create' and append reset button
-					$heightInput.parentNode.appendChild( document.createElement( 'br' ) );
-					$wrapper.innerHTML = '<a href="#reset-' + size + '" class="button" data-image_size="' + size + '" style="margin-top: .5em"><?php _e( 'Reset to default', 'image-sizes' ) ?></a>';
-					$heightInput.parentNode.appendChild( $wrapper.children[0] );
+					$wrapper.innerHTML = '<span class="progress"></span><span class="status"></span>'
+					+ '<input class="button button-small button-primary" value="<?php _e( 'Save Changes' ) ?>" type="submit" style="display: none">'
+					+ '<a href="#regenerate-' + size + '" class="button button-small" data-image_size="' + size + '"><?php _e( 'Regenerate images', 'image-sizes' ) ?></a> '
+					+ '<a href="#reset-' + size + '" class="button button-small" data-image_size="' + size + '"><?php _e( 'Reset to default', 'image-sizes' ) ?></a>';
+					$wrapper.className = 'image-size__actions';
+					$heightInput.parentNode.appendChild( $wrapper );
 				}
 
 				var request = new XMLHttpRequest();
 
-				Array.prototype.forEach.call( document.querySelectorAll( 'a[data-image_size]' ), function ( $reset ) {
-					$reset.addEventListener( 'click', function ( e ) {
+				// trigger input change
+				// and replace regenerate button with save button
+				// because changes must be saved first!
+				Array.prototype.forEach.call( document.querySelectorAll( 'input[type="number"], input[type="checkbox"]' ), function ( $input ) {
+					// 'save' old (initial) value to compare with
+					$input.setAttribute( 'data-value', $input.type == 'checkbox' ? $input.checked : $input.value );
+
+					var $save = $input.parentNode.getElementsByClassName( 'button-primary' )[0],
+						$regenerate = $input.parentNode.querySelector( '[href^="#regenerate-"]' );
+
+					['click', 'change', 'blur', 'keyup'].forEach( function ( event ) {
+						$input.addEventListener( event, function () {
+							var bChanged = false,
+								oldValue = this.getAttribute( 'data-value' );
+
+							switch ( $input.type ) {
+								default:
+									if ( this.value != oldValue ) {
+										bChanged = true;
+									}
+									break;
+
+								case 'checkbox':
+									if ( oldValue != $input.checked + '' ) {
+										bChanged = true;
+									}
+									break;
+							}
+
+							if ( bChanged ) {
+								if ( $input.className.indexOf( ' changed' ) < 0 ) {
+									$input.className += ' changed';
+								}
+							}
+							else {
+								$input.className = $input.className.replace( ' changed', '' );
+							}
+
+							// check if any input
+							if ( $input.parentNode.getElementsByClassName( 'changed' ).length ) {
+								$save.style.display = '';
+								$regenerate.style.display = 'none';
+							}
+							else {
+								$save.style.display = 'none';
+								$regenerate.style.display = '';
+							}
+						} );
+					} );
+				} );
+
+				Array.prototype.forEach.call( document.querySelectorAll( 'a[data-image_size]' ), function ( $action ) {
+					$action.addEventListener( 'click', function ( e ) {
 						e.preventDefault();
 
+						var button = this;
+
+						var action = button.getAttribute( 'href' ).match( /^#(reset|regenerate)-(.+)/ ),
+							image_size = button.getAttribute( 'data-image_size' );
+
+						switch ( action[1] ) {
+							case 'regenerate':
+								if ( button.parentNode.className.indexOf( ' progress-bar' ) < 0 ) {
+									var $progress = button.parentNode.getElementsByClassName( 'progress' )[0],
+										$status = button.parentNode.getElementsByClassName( 'status' )[0],
+										message = '<?php _e( 'Initializing ...', 'image-sizes' ) ?>';
+
+									$progress.innerHTML = message;
+									$status.innerHTML = message;
+
+									button.parentNode.className += ' progress-bar';
+								}
+								break;
+
+							case 'reset':
+								button.className += ' pending';
+								break;
+						}
+
 						request.open( 'GET', '<?php echo admin_url( 'admin-ajax.php' ) ?>'
-						+ '?action=imagesizes_reset'
-						+ '&image_size=' + this.getAttribute( 'data-image_size' ) );
+						+ '?action=imagesizes_' + action[1]
+						+ '&image_size=' + image_size );
 
 						request.onreadystatechange = function () {
 							if ( this.readyState === 4 ) {
-								location.reload();
+								button.className = button.className.replace( ' pending', ' done' );
+
+								if ( action[1] == 'reset' ) location.href = location.href; // reload page
+								else {
+									var attachments = JSON.parse( this.responseText ),
+										i = 0;
+
+									function regenerateAttachment( attachment ) {
+										message = '<?php _e( 'Regenerating image %s of %s: %s', 'image-sizes' ) ?>'
+											.replace( '%s', ++i ).replace( '%s', attachments.length ).replace( '%s', attachment['title'] );
+										$progress.innerHTML = message;
+										$status.innerHTML = message;
+
+										$progress.style.width = i * 100 / attachments.length + '%';
+
+										request.open( 'GET', '<?php echo admin_url( 'admin-ajax.php' ) ?>'
+										+ '?action=imagesizes_' + action[1]
+										+ '&image_size=' + image_size
+										+ '&attachment_id=' + attachment['id'] );
+
+										request.onreadystatechange = function () {
+											if ( this.readyState === 4 ) {
+												// next image
+												if ( !!attachments[i] ) regenerateAttachment( attachments[i] );
+												// ... or end
+												else {
+													$progress.innerHTML = '<?php _e( 'Regenerating completed!', 'image-size' ) ?>';
+
+													// reset
+													setTimeout( function () {
+														button.parentNode.className = button.parentNode.className.replace( ' progress-bar', '' );
+
+														$progress.style.width = '';
+														$progress.innerHTML = '';
+														$status.innerHTML = '';
+													}, 3000 );
+
+												}
+											}
+										};
+
+										request.send();
+									}
+
+									// start regeneration images one by one
+									regenerateAttachment( attachments[i] );
+								}
 							}
 						};
 
 						request.send();
+						button.blur();
 					} );
 				} );
 
@@ -266,14 +405,93 @@ function imagesizes_notice( $message = '', $type = 'info', $inline = true ) {
 }
 
 /**
+ * Regenerate images.
+ */
+add_action( 'wp_ajax_imagesizes_regenerate', 'imagesizes_regenerate' );
+add_action( 'wp_ajax_nopriv_imagesizes_regenerate', 'imagesizes_regenerate' );
+function imagesizes_regenerate( $attachment_id = NULL, $regenerate = NULL ) {
+	if ( function_exists( 'wp_doing_ajax' ) ) {
+		$is_ajax = wp_doing_ajax();
+	} else {
+		$is_ajax = apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
+	}
+
+	if ( empty( $_GET['attachment_id'] ) ) {
+		$attachments = array();
+		foreach (
+			get_children( array(
+				'post_type'      => 'attachment',
+				'post_mime_type' => 'image',
+				'numberposts'    => - 1,
+				'post_status'    => NULL,
+				'post_parent'    => NULL, // any parent
+				'output'         => 'object',
+			) ) as $attachment
+		) {
+			$attachments[] = array(
+				'id'    => $attachment->ID,
+				'title' => $attachment->post_title
+			);
+		}
+
+		if ( $is_ajax ) {
+			die( json_encode( $attachments ) );
+		}
+
+		return $attachments;
+	}
+
+	// regenerate
+
+	$attachment_id = $_GET['attachment_id'];
+
+	if ( ( $file = get_attached_file( $attachment_id ) ) && @file_exists( $file ) ) {
+		@error_reporting( 0 );
+		@set_time_limit( 115 );
+
+		// filter image sizes
+		// disabled for now ... because of missing image sizes in media popup :/
+//		add_filter( 'intermediate_image_sizes_advanced', 'imagesizes_intermediate_image_sizes_advanced', 10, 2 );
+
+		$metadata = wp_generate_attachment_metadata( $attachment_id, $file );
+
+		if ( ! is_wp_error( $metadata ) && ! empty( $metadata ) ) {
+			wp_update_attachment_metadata( $attachment_id, $metadata );
+		}
+
+		if ( $is_ajax ) {
+			die( 1 );
+		}
+
+		return true;
+	}
+
+	if ( $is_ajax ) {
+		die( 0 );
+	}
+
+	return false;
+}
+
+// filter image sizes
+function imagesizes_intermediate_image_sizes_advanced( $sizes, $metadata ) {
+	// re/generate specific size
+	if ( isset( $_GET['action'] ) && $_GET['action'] == 'imagesizes_regenerate' && ! empty( $_GET['image_size'] ) ) {
+		$sizes = array_filter( $sizes, function ( $image_size ) {
+			return $image_size == $_GET['image_size'];
+		}, ARRAY_FILTER_USE_KEY );
+	}
+
+	return $sizes;
+}
+
+/**
  * Delete traces in db on deactivation or reset.
  */
 add_action( 'wp_ajax_imagesizes_reset', 'imagesizes_deactivate' );
 add_action( 'wp_ajax_nopriv_imagesizes_reset', 'imagesizes_deactivate' );
 register_deactivation_hook( __FILE__, 'imagesizes_deactivate' );
-function imagesizes_deactivate() {
-	$reset = NULL; // deactivate
-	// ... or reset
+function imagesizes_deactivate( $reset = NULL ) {
 	if ( isset( $_GET['action'] ) && $_GET['action'] == 'imagesizes_reset' ) {
 		$reset = isset( $_GET['image_size'] ) ? $_GET['image_size'] : '';
 	}

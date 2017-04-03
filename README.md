@@ -1,6 +1,10 @@
 # WordPress Image Sizes
 
-Edit all available image sizes.
+Get access (capability: manage_options) to all image sizes and edit their dimensions for your purpose.
+
+You can also define whether to crop images to specified width and height or resize.
+
+Last but not least: regenerate your images after changing any image size setting to apply these changes to already uploaded images.
 
 ## Installation
 
@@ -20,15 +24,13 @@ Edit all available image sizes.
 
 ## Usage
 
-You can find all _additional_ settings (sizes, cropping, reset) on the 'Media' options page listed in the submenu of 'Settings'.
+You can find all _additional_ settings (sizes, cropping, reset, regenerate) on the 'Media' options page listed in the submenu of 'Settings'.
 
 ![image](assets/screenshot-1.png)
 
 ### Note
 
 If you change any settings, you must regenerate the images to apply the changes **to already uploaded images**.
-
-Since in-plugin image regeneration is not implemented yet, you must use a third-party plugin for this like [Regenerate Thumbnails](https://de.wordpress.org/plugins/regenerate-thumbnails/).
 
 ## Plugin Updates
 

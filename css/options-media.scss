@@ -1,0 +1,86 @@
+.form-table {
+  table-layout: fixed;
+
+  tr:first-child td p {
+    margin-top: 10px;
+  }
+}
+
+.image-size__actions {
+  .button {
+    &:before {
+      display: inline-block;
+      font: 400 1.25em/1 dashicons;
+      margin: 5px .28em 0 0;
+      float: left;
+    }
+
+    &.done:before {
+      content: "\f147";
+      color: #79ba49;
+    }
+
+    &.pending {
+      pointer-events: none;
+
+      &:before {
+        content: "\f463";
+        color: #555;
+        animation: rotation 2s infinite linear;
+      }
+    }
+  }
+
+  &.progress-bar,
+  .progress {
+    overflow: hidden;
+
+    &:not(:empty) {
+      padding-right: 10px;
+      padding-left: 10px;
+    }
+  }
+
+  &.progress-bar {
+    background-color: rgba(#000, .15);
+    position: relative;
+    white-space: nowrap;
+    line-height: 27px;
+
+    @media (min-width: 783px) {
+      font-size: 11px;
+      line-height: 24px;
+    }
+
+    .progress {
+      color: #fff;
+      position: absolute;
+      top: 0;
+      width: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #79ba49;
+      transition: width .2s;
+      box-sizing: border-box;
+
+      @media (max-width: 782px) {
+        line-height: 31px;
+      }
+    }
+
+    .button {
+      visibility: hidden;
+      width: 1px;
+      font-size: 11px;
+      line-height: 22px;
+      height: 24px;
+    }
+  }
+
+  &:not(.progress-bar) {
+    .progress,
+    .status {
+      display: none;
+    }
+  }
+}

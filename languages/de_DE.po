@@ -15,8 +15,11 @@ msgstr ""
 msgid "%s size"
 msgstr "%s Größe"
 
-msgid "Be aware that the following image sizes have their dimension for a reason<br />... so be <i>careful</i> changing them and always check the output."
-msgstr "Sei dir bewusst, dass die folgenden Bildgrößen ihre Dimensionen aus einem Grund haben<br />... also sei <i>vorsichtig</i>, sie zu ändern und überprüfe immer die Ausgabe."
+msgid "Action for all image sizes"
+msgstr "Aktion für alle Bildgrößen"
+
+msgid "Be aware that the following image sizes have their dimension for a <i>reason</i><br />... so be <i>careful</i> changing them and always check the output."
+msgstr "Sei dir bewusst, dass die folgenden Bildgrößen ihre Dimensionen aus einem <i>Grund</i> haben<br />... also sei <i>vorsichtig</i>, sie zu ändern und überprüfe immer die Ausgabe."
 
 msgid "Crop this image size to exact dimensions"
 msgstr "Auf die exakte Größe beschneiden"
@@ -24,23 +27,32 @@ msgstr "Auf die exakte Größe beschneiden"
 msgid "Edit all available image sizes."
 msgstr "Bearbeite alle verfügbaren Bildgrößen."
 
-msgid "If you change any setting below, you must regenerate the images to apply the changes to already uploaded images."
-msgstr "Wenn du eine der u.g. Einstellungen änderst, musst du die bereits hochgeladenen Bilder neu generieren lassen um die Änderungen anzuwenden."
-
 msgid "Image Sizes"
 msgstr "Bildergrößen"
+
+msgid "Initializing ..."
+msgstr "Initialisierung ..."
 
 msgid "Note"
 msgstr "Hinweis"
 
-msgid "Regenerate Images"
+msgid "Regenerate all images"
+msgstr "Alle Bilder neu erstellen"
+
+msgid "Regenerating completed!"
+msgstr "Regeneration abgeschlossen!"
+
+msgid "Regenerating image %s of %s: %s"
+msgstr "Regeneriere Bild %s von %s: %s"
+
+msgid "Regenerate images"
 msgstr "Bilder neu erstellen"
 
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-msgid "Reset all image sizes"
-msgstr "Alle Bildgrößen auf Standard zurücksetzen"
+msgid "Reset all to default"
+msgstr "Alle Werte auf Standard zurücksetzen"
 
 msgid "Reset to default"
-msgstr "Standardwerte zurücksetzen"
+msgstr "Werte auf Standard zurücksetzen"

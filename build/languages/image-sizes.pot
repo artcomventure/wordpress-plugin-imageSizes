@@ -15,7 +15,10 @@ msgstr ""
 msgid "%s size"
 msgstr ""
 
-msgid "Be aware that the following image sizes have their dimension for a reason<br />... so be <i>careful</i> changing them and always check the output."
+msgid "Action for all image sizes"
+msgstr ""
+
+msgid "Be aware that the following image sizes have their dimension for a <i>reason</i><br />... so be <i>careful</i> changing them and always check the output."
 msgstr ""
 
 msgid "Crop this image size to exact dimensions"
@@ -24,22 +27,28 @@ msgstr ""
 msgid "Edit all available image sizes."
 msgstr ""
 
-msgid "If you change any setting below, you must regenerate the images to apply the changes to already uploaded images."
+msgid "Image Sizes"
 msgstr ""
 
-msgid "Image Sizes"
+msgid "Initializing ..."
 msgstr ""
 
 msgid "Note"
 msgstr ""
 
-msgid "Regenerate Images"
+msgid "Regenerate all images"
 msgstr ""
 
-msgid "Reset"
+msgid "Regenerate images"
 msgstr ""
 
-msgid "Reset all image sizes"
+msgid "Regenerating completed!"
+msgstr ""
+
+msgid "Regenerating image %s of %s: %s"
+msgstr ""
+
+msgid "Reset all to default"
 msgstr ""
 
 msgid "Reset to default"
