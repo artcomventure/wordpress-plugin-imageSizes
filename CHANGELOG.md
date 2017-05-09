@@ -5,6 +5,11 @@
 * add image sizes
 * regenerate single image
 
+## 1.2.1 - 2017-05-09
+**Fixed**
+
+* Js error on empty attachments.
+
 ## 1.2.0 - 2017-04-03
 **Added**
 

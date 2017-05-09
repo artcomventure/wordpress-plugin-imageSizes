@@ -4,7 +4,7 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -307,6 +307,18 @@ function imagesizes__admin_init() {
 									$status.innerHTML = message;
 
 									button.parentNode.className += ' progress-bar';
+
+									function removeProgressBar( msg ) {
+										$progress.innerHTML = msg || '<?php _e( 'Regenerating completed!', 'image-size' ) ?>';
+
+										setTimeout( function () {
+											button.parentNode.className = button.parentNode.className.replace( ' progress-bar', '' );
+
+											$progress.style.width = '';
+											$progress.innerHTML = '';
+											$status.innerHTML = '';
+										}, 3000 );
+									}
 								}
 								break;
 
@@ -328,6 +340,12 @@ function imagesizes__admin_init() {
 									var attachments = JSON.parse( this.responseText ),
 										i = 0;
 
+									// no attachments to regenerate
+									if ( !attachments || !attachments.length) {
+										$progress.style.width = '100%';
+										return removeProgressBar( '<?php _e( 'Nothing to regenerate.', 'image-size' ) ?>' );
+									}
+
 									function regenerateAttachment( attachment ) {
 										message = '<?php _e( 'Regenerating image %s of %s: %s', 'image-sizes' ) ?>'
 											.replace( '%s', ++i ).replace( '%s', attachments.length ).replace( '%s', attachment['title'] );
@@ -343,22 +361,8 @@ function imagesizes__admin_init() {
 
 										request.onreadystatechange = function () {
 											if ( this.readyState === 4 ) {
-												// next image
-												if ( !!attachments[i] ) regenerateAttachment( attachments[i] );
-												// ... or end
-												else {
-													$progress.innerHTML = '<?php _e( 'Regenerating completed!', 'image-size' ) ?>';
-
-													// reset
-													setTimeout( function () {
-														button.parentNode.className = button.parentNode.className.replace( ' progress-bar', '' );
-
-														$progress.style.width = '';
-														$progress.innerHTML = '';
-														$status.innerHTML = '';
-													}, 3000 );
-
-												}
+												if ( !!attachments[i] ) regenerateAttachment( attachments[i] ); // next image
+												else removeProgressBar(); // ... or end
 											}
 										};
 

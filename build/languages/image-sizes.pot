@@ -36,6 +36,9 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
+msgid "Nothing to regenerate."
+msgstr ""
+
 msgid "Regenerate all images"
 msgstr ""
 

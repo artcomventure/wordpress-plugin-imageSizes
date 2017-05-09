@@ -36,6 +36,9 @@ msgstr "Initialisierung ..."
 msgid "Note"
 msgstr "Hinweis"
 
+msgid "Nothing to regenerate."
+msgstr "Keine Bilder zum Regenerieren vorhanden."
+
 msgid "Regenerate all images"
 msgstr "Alle Bilder neu erstellen"
 

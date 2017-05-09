@@ -65,10 +65,15 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-image
 * add image sizes
 * regenerate single image
 
+= 1.2.1 - 2017-05-09 =
+**Fixed**
+
+* Js error on empty attachments.
+
 = 1.2.0 - 2017-04-03 =
 **Added**
 
-* Regenerate images (all or by image size).
+* Regenerate images.
 
 = 1.1.0 - 2017-03-31 =
 **Added**
