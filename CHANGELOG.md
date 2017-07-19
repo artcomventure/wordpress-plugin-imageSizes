@@ -5,6 +5,11 @@
 * add image sizes
 * regenerate single image
 
+## 1.2.2 - 2017-07-19
+**Fixed**
+
+* Plugins page: remove default update notification and change row meta.
+
 ## 1.2.1 - 2017-05-09
 **Fixed**
 

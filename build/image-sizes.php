@@ -4,7 +4,7 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -487,6 +487,36 @@ function imagesizes_intermediate_image_sizes_advanced( $sizes, $metadata ) {
 	}
 
 	return $sizes;
+}
+
+/**
+ * Remove update notification (since this plugin isn't listed on https://wordpress.org/plugins/).
+ */
+add_filter( 'site_transient_update_plugins', 'imagesizes__site_transient_update_plugins' );
+function imagesizes__site_transient_update_plugins( $value ) {
+	$plugin_file = plugin_basename( __FILE__ );
+
+	if ( isset( $value->response[ $plugin_file ] ) ) {
+		unset( $value->response[ $plugin_file ] );
+	}
+
+	return $value;
+}
+
+/**
+ * Change details link to GitHub repository.
+ */
+add_filter( 'plugin_row_meta', 'imagesizes__plugin_row_meta', 10, 2 );
+function imagesizes__plugin_row_meta( $links, $file ) {
+	if ( plugin_basename( __FILE__ ) == $file ) {
+		$plugin_data = get_plugin_data( WP_PLUGIN_DIR . '/' . $file );
+
+		$links[2] = '<a href="' . $plugin_data['PluginURI'] . '">' . __( 'Visit plugin site' ) . '</a>';
+
+		$links[] = '<a href="' . admin_url( 'options-media.php' ) . '">' . __( 'Settings' ) . '</a>';
+	}
+
+	return $links;
 }
 
 /**
