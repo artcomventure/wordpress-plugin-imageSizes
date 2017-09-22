@@ -6,7 +6,7 @@ Tags: Media, Images, Thumbnails
 Requires at least:
 Tested up to:
 Stable tag:
-License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: MIT
+License URI: https://github.com/artcomventure/wordpress-plugin-imageSizes/blob/master/LICENSE
 
 Edit all available image sizes.

@@ -6,8 +6,8 @@ Tags: Media, Images, Thumbnails
 Requires at least:
 Tested up to:
 Stable tag:
-License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: MIT
+License URI: https://github.com/artcomventure/wordpress-plugin-imageSizes/blob/master/LICENSE
 
 Edit all available image sizes.
 
@@ -64,6 +64,15 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-image
 
 * add image sizes
 * regenerate single image
+
+= 1.3.0 - 2017-09-22 =
+**Added**
+
+* Specify positioning of the crop area.
+
+**Changed**
+
+* Licence from GPLv3 to MIT.
 
 = 1.2.2 - 2017-07-19 =
 **Fixed**

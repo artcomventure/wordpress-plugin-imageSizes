@@ -3,9 +3,16 @@
     table-layout: fixed;
 }
 
-.form-table tr:first-child td p
+.form-table select
 {
-    margin-top: 10px;
+    margin-top: .14em;
+    margin-right: .28em;
+}
+
+.form-table label
+{
+    display: inline-block;
+    margin: .25em 0 .5em !important;
 }
 
 .image-size__actions .button:before

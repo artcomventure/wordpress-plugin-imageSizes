@@ -1,8 +1,14 @@
 .form-table {
   table-layout: fixed;
 
-  tr:first-child td p {
-    margin-top: 10px;
+  select {
+    margin-top: .14em;
+    margin-right: .28em;
+  }
+
+  label {
+    margin: .25em 0 .5em !important;
+    display: inline-block;
   }
 }
 

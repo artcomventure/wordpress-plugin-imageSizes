@@ -21,7 +21,19 @@ msgstr ""
 msgid "Be aware that the following image sizes have their dimension for a <i>reason</i><br />... so be <i>careful</i> changing them and always check the output."
 msgstr ""
 
-msgid "Crop this image size to exact dimensions"
+msgid "Center bottom"
+msgstr ""
+
+msgid "Center top"
+msgstr ""
+
+msgid "Centered"
+msgstr ""
+
+msgid "crop this image size to exact dimensions"
+msgstr ""
+
+msgid "Do not"
 msgstr ""
 
 msgid "Edit all available image sizes."
@@ -31,6 +43,15 @@ msgid "Image Sizes"
 msgstr ""
 
 msgid "Initializing ..."
+msgstr ""
+
+msgid "Left bottom"
+msgstr ""
+
+msgid "Left center"
+msgstr ""
+
+msgid "Left top"
 msgstr ""
 
 msgid "Note"
@@ -55,4 +76,13 @@ msgid "Reset all to default"
 msgstr ""
 
 msgid "Reset to default"
+msgstr ""
+
+msgid "Right bottom"
+msgstr ""
+
+msgid "Right center"
+msgstr ""
+
+msgid "Right top"
 msgstr ""

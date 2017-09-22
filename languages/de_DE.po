@@ -21,8 +21,20 @@ msgstr "Aktion für alle Bildgrößen"
 msgid "Be aware that the following image sizes have their dimension for a <i>reason</i><br />... so be <i>careful</i> changing them and always check the output."
 msgstr "Sei dir bewusst, dass die folgenden Bildgrößen ihre Dimensionen aus einem <i>Grund</i> haben<br />... also sei <i>vorsichtig</i>, sie zu ändern und überprüfe immer die Ausgabe."
 
-msgid "Crop this image size to exact dimensions"
-msgstr "Auf die exakte Größe beschneiden"
+msgid "Center bottom"
+msgstr "Mittig unten"
+
+msgid "Center top"
+msgstr "Mittig oben"
+
+msgid "Centered"
+msgstr "Zentriert"
+
+msgid "crop this image size to exact dimensions"
+msgstr "auf die exakte Größe beschneiden"
+
+msgid "Do not"
+msgstr "Nicht"
 
 msgid "Edit all available image sizes."
 msgstr "Bearbeite alle verfügbaren Bildgrößen."
@@ -32,6 +44,15 @@ msgstr "Bildergrößen"
 
 msgid "Initializing ..."
 msgstr "Initialisierung ..."
+
+msgid "Left bottom"
+msgstr "Links unten"
+
+msgid "Left center"
+msgstr "Links zentriert"
+
+msgid "Left top"
+msgstr "Links oben"
 
 msgid "Note"
 msgstr "Hinweis"
@@ -59,3 +80,12 @@ msgstr "Alle Werte auf Standard zurücksetzen"
 
 msgid "Reset to default"
 msgstr "Werte auf Standard zurücksetzen"
+
+msgid "Right bottom"
+msgstr "Rechts unten"
+
+msgid "Right center"
+msgstr "Rechts zentriert"
+
+msgid "Right top"
+msgstr "Rechts oben"
