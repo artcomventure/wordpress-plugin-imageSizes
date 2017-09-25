@@ -90,7 +90,8 @@ function imagesizes_get_image_sizes( $defaults = false ) {
 
 		// make string to array
 		if ( ! $defaults && ! is_array( $image_sizes[ $image_size ]['crop'] ) && ! is_bool( $image_sizes[ $image_size ]['crop'] ) && ! is_numeric( $image_sizes[ $image_size ]['crop'] ) ) {
-			update_option( "{$image_size}_crop", explode( ' ', $image_sizes[ $image_size ]['crop'] ) );
+			$image_sizes[ $image_size ]['crop']                = explode( ' ', $image_sizes[ $image_size ]['crop'] );
+			$_wp_additional_image_sizes[ $image_size ]['crop'] = $image_sizes[ $image_size ]['crop'];
 		}
 	}
 
@@ -98,11 +99,10 @@ function imagesizes_get_image_sizes( $defaults = false ) {
 }
 
 /**
- * Implements action 'after_setup_theme'.
+ * Load plugin's textdomain.
  */
-add_action( 'after_setup_theme', 'imagesizes__after_setup_theme' );
-function imagesizes__after_setup_theme() {
-	// t9n
+add_action( 'after_setup_theme', 'imagesizes_t9n' );
+function imagesizes_t9n() {
 	load_theme_textdomain( 'image-sizes', plugin_dir_path( __FILE__ ) . 'languages' );
 }
 
@@ -120,12 +120,15 @@ function imagesizes__admin_init() {
 		// override image sizes
 		add_image_size( $image_size, get_option( "{$image_size}_size_w", $settings['width'] ), get_option( "{$image_size}_size_h", $settings['height'] ), $settings['crop'] );
 
+		if ( $image_size == 'thumbnail' ) {
+			continue;
+		}
+
 		// register the size's crop setting so that $_POST handling is done for us
 		register_setting( 'media', "{$image_size}_crop" );
 
 		// ignore because they are already added by WP
 		if ( in_array( $image_size, array(
-			'thumbnail',
 			'medium',
 			'large'
 		) ) ) {
@@ -172,7 +175,6 @@ function imagesizes__admin_init() {
 		<?php }, 'media' );
 	}
 
-	// notice to regenerate the thumbnails
 	add_settings_field( 'image-sizes-actions', __( 'For all image sizes', 'image-sizes' ), function () { ?>
 
 		<p class="image-size__actions">
@@ -401,6 +403,8 @@ function imagesizes__admin_init() {
 }
 
 /**
+ * Retrieve message.
+ *
  * @param string $message
  * @param string $type
  * @param bool $inline
@@ -412,6 +416,8 @@ function get_imagesizes_notice( $message = '', $type = 'info', $inline = true ) 
 }
 
 /**
+ * Display message.
+ *
  * @param string $message
  * @param string $type
  * @param bool $inline
@@ -423,19 +429,19 @@ function imagesizes_notice( $message = '', $type = 'info', $inline = true ) {
 }
 
 /**
- * Regenerate images.
+ * Regenerate image(s).
+ *
+ * @param null $attachment_id
+ * @param null $regenerate
+ *
+ * @return array|bool
  */
 add_action( 'wp_ajax_imagesizes_regenerate', 'imagesizes_regenerate' );
 add_action( 'wp_ajax_nopriv_imagesizes_regenerate', 'imagesizes_regenerate' );
 function imagesizes_regenerate( $attachment_id = NULL, $regenerate = NULL ) {
-	if ( function_exists( 'wp_doing_ajax' ) ) {
-		$is_ajax = wp_doing_ajax();
-	} else {
-		$is_ajax = apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX );
-	}
-
 	if ( empty( $_GET['attachment_id'] ) ) {
 		$attachments = array();
+
 		foreach (
 			get_children( array(
 				'post_type'      => 'attachment',
@@ -452,7 +458,7 @@ function imagesizes_regenerate( $attachment_id = NULL, $regenerate = NULL ) {
 			);
 		}
 
-		if ( $is_ajax ) {
+		if ( wp_doing_ajax() ) {
 			die( json_encode( $attachments ) );
 		}
 
@@ -477,14 +483,14 @@ function imagesizes_regenerate( $attachment_id = NULL, $regenerate = NULL ) {
 			wp_update_attachment_metadata( $attachment_id, $metadata );
 		}
 
-		if ( $is_ajax ) {
+		if ( wp_doing_ajax() ) {
 			die( 1 );
 		}
 
 		return true;
 	}
 
-	if ( $is_ajax ) {
+	if ( wp_doing_ajax() ) {
 		die( 0 );
 	}
 

@@ -65,6 +65,11 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-image
 * add image sizes
 * regenerate single image
 
+= 1.3.1 - 2017-09-25 =
+**Fixed**
+
+* Image size crop.
+
 = 1.3.0 - 2017-09-22 =
 **Added**
 
