@@ -65,6 +65,11 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-image
 * add image sizes
 * regenerate single image
 
+= 1.3.2 - 2017-09-29 =
+**Fixed**
+
+* _Problem_ on image size override.
+
 = 1.3.1 - 2017-09-25 =
 **Fixed**
 

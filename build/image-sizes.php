@@ -4,7 +4,7 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.3.1
+ * Version: 1.3.2
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -36,25 +36,25 @@ function imagesizes_get_image_sizes( $defaults = false ) {
 
 	// @see ROOT/wp-admin/includes/schema.php
 	$default_sizes = array(
-		'thumbnail'    => array(
-			'width'  => 150,
+		'thumbnail' => array(
+			'width' => 150,
 			'height' => 150,
-			'crop'   => true
+			'crop' => true
 		),
-		'medium'       => array(
-			'width'  => 300,
+		'medium' => array(
+			'width' => 300,
 			'height' => 300,
-			'crop'   => false
+			'crop' => false
 		),
 		'medium_large' => array(
-			'width'  => 768,
+			'width' => 768,
 			'height' => 0,
-			'crop'   => false
+			'crop' => false
 		),
-		'large'        => array(
-			'width'  => 1024,
+		'large' => array(
+			'width' => 1024,
 			'height' => 1024,
-			'crop'   => false
+			'crop' => false
 		),
 	);
 
@@ -68,29 +68,29 @@ function imagesizes_get_image_sizes( $defaults = false ) {
 			'large'
 		) ) ) {
 			$image_sizes[ $image_size ] = array(
-				'width'  => ( $defaults ? $default_sizes[ $image_size ]['width'] : get_option( "{$image_size}_size_w" ) ),
+				'width' => ( $defaults ? $default_sizes[ $image_size ]['width'] : get_option( "{$image_size}_size_w" ) ),
 				'height' => ( $defaults ? $default_sizes[ $image_size ]['height'] : get_option( "{$image_size}_size_h" ) ),
-				'crop'   => ( $defaults ? $default_sizes[ $image_size ]['crop'] : get_option( "{$image_size}_crop" ) )
+				'crop' => ( $defaults ? $default_sizes[ $image_size ]['crop'] : get_option( "{$image_size}_crop" ) )
 			);
 		} elseif ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
 			// default values
 			$image_sizes[ $image_size ] = array(
-				'width'  => $_wp_additional_image_sizes[ $image_size ]['width'],
+				'width' => $_wp_additional_image_sizes[ $image_size ]['width'],
 				'height' => $_wp_additional_image_sizes[ $image_size ]['height'],
-				'crop'   => $_wp_additional_image_sizes[ $image_size ]['crop'],
+				'crop' => $_wp_additional_image_sizes[ $image_size ]['crop'],
 			);
 
 			// current values
 			if ( ! $defaults ) {
-				$image_sizes[ $image_size ]['width']  = get_option( "{$image_size}_size_w", $image_sizes[ $image_size ]['width'] );
+				$image_sizes[ $image_size ]['width'] = get_option( "{$image_size}_size_w", $image_sizes[ $image_size ]['width'] );
 				$image_sizes[ $image_size ]['height'] = get_option( "{$image_size}_size_h", $image_sizes[ $image_size ]['height'] );
-				$image_sizes[ $image_size ]['crop']   = get_option( "{$image_size}_crop", $image_sizes[ $image_size ]['crop'] ) . '';
+				$image_sizes[ $image_size ]['crop'] = get_option( "{$image_size}_crop", $image_sizes[ $image_size ]['crop'] ) . '';
 			}
 		}
 
 		// make string to array
 		if ( ! $defaults && ! is_array( $image_sizes[ $image_size ]['crop'] ) && ! is_bool( $image_sizes[ $image_size ]['crop'] ) && ! is_numeric( $image_sizes[ $image_size ]['crop'] ) ) {
-			$image_sizes[ $image_size ]['crop']                = explode( ' ', $image_sizes[ $image_size ]['crop'] );
+			$image_sizes[ $image_size ]['crop'] = explode( ' ', $image_sizes[ $image_size ]['crop'] );
 			$_wp_additional_image_sizes[ $image_size ]['crop'] = $image_sizes[ $image_size ]['crop'];
 		}
 	}
@@ -106,6 +106,15 @@ function imagesizes_t9n() {
 	load_theme_textdomain( 'image-sizes', plugin_dir_path( __FILE__ ) . 'languages' );
 }
 
+// override image sizes
+add_action( 'admin_init', 'override_image_sizes', 100 );
+add_action( 'init', 'override_image_sizes', 100 );
+function override_image_sizes() {
+	foreach ( imagesizes_get_image_sizes() as $image_size => $settings ) {
+		add_image_size( $image_size, get_option( "{$image_size}_size_w", $settings['width'] ), get_option( "{$image_size}_size_h", $settings['height'] ), $settings['crop'] );
+	}
+}
+
 /**
  * Register crop settings for image sizes.
  */
@@ -117,9 +126,6 @@ function imagesizes__admin_init() {
 	}, 'media' );
 
 	foreach ( imagesizes_get_image_sizes() as $image_size => $settings ) {
-		// override image sizes
-		add_image_size( $image_size, get_option( "{$image_size}_size_w", $settings['width'] ), get_option( "{$image_size}_size_h", $settings['height'] ), $settings['crop'] );
-
 		if ( $image_size == 'thumbnail' ) {
 			continue;
 		}
@@ -444,16 +450,16 @@ function imagesizes_regenerate( $attachment_id = NULL, $regenerate = NULL ) {
 
 		foreach (
 			get_children( array(
-				'post_type'      => 'attachment',
+				'post_type' => 'attachment',
 				'post_mime_type' => 'image',
-				'numberposts'    => - 1,
-				'post_status'    => NULL,
-				'post_parent'    => NULL, // any parent
-				'output'         => 'object',
+				'numberposts' => - 1,
+				'post_status' => NULL,
+				'post_parent' => NULL, // any parent
+				'output' => 'object',
 			) ) as $attachment
 		) {
 			$attachments[] = array(
-				'id'    => $attachment->ID,
+				'id' => $attachment->ID,
 				'title' => $attachment->post_title
 			);
 		}
