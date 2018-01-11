@@ -65,6 +65,11 @@ Don't hesitate! [Issues](https://github.com/artcomventure/wordpress-plugin-image
 * add image sizes
 * regenerate single image
 
+= 1.3.3 - 2018-01-11 =
+**Fixed**
+
+* JS bug since WP 4.9.1
+
 = 1.3.2 - 2017-09-29 =
 **Fixed**
 

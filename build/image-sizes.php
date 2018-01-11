@@ -4,7 +4,7 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.3.2
+ * Version: 1.3.3
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -20,7 +20,7 @@ function imagesizes_admin_style() {
 		return;
 	}
 
-	wp_enqueue_style( 'imagesize-options-media', plugin_dir_url( __FILE__ ) . 'css/options-media.css' );
+	wp_enqueue_style( 'imagesize-options-media', plugin_dir_url( __FILE__ ) . 'css/options-media.css', array(), '20180111' );
 }
 
 /**
@@ -218,8 +218,11 @@ function imagesizes__admin_init() {
 							var $label = document.querySelector( 'label[for="thumbnail_crop"]' );
 							if ( !$label ) return;
 
-							$label.previousElementSibling.remove(); // checkbox
-							$label.previousElementSibling.remove(); // br
+                            // remove checkbox (and possible br)
+							while ( $label.previousElementSibling ) {
+                                $label.previousElementSibling.remove();
+                            }
+
 							$label.remove(); // label itself
 						})();
 					}
@@ -232,7 +235,7 @@ function imagesizes__admin_init() {
 						$label.innerHTML = '<?php _e( 'Height' ) ?>';
 					}
 
-					$heightInput.parentNode.appendChild( document.createElement( 'br' ) );
+					$heightInput.parentNode.appendChild( document.createElement( 'p' ) );
 
 					$wrapper.innerHTML = '<select name="' + size + '_crop" id="' + size + '_crop">'
 					+ '<option value="0"' + ( crop[size] == 0 ? ' selected="selected"' : '' ) + '><?php _e( 'Do not', 'image-sizes' ) ?></option>'
