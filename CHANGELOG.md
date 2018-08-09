@@ -5,6 +5,11 @@
 * add image sizes
 * regenerate single image
 
+## 1.3.4 - 2018-08-09
+**Fixed**
+
+* JS bug since WP 4.9.8 (at least :/)
+
 ## 1.3.3 - 2018-01-11
 **Fixed**
 

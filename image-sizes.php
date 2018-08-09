@@ -4,7 +4,7 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.3.3
+ * Version: 1.3.4
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -165,6 +165,8 @@ function imagesizes__admin_init() {
 				       value="<?php echo esc_attr( $settings['width'] ); ?>"
 				       class="small-text"/>
 
+                <br />
+
 				<?php $name = "{$image_size}_size_h"; ?>
 
 				<label for="<?php echo $name; ?>">
@@ -213,18 +215,10 @@ function imagesizes__admin_init() {
 					var $wrapper = document.createElement( 'p' );
 
 					if ( size == 'thumbnail' ) {
-						// remove default thumbnail input
-						(function () {
-							var $label = document.querySelector( 'label[for="thumbnail_crop"]' );
-							if ( !$label ) return;
-
-                            // remove checkbox (and possible br)
-							while ( $label.previousElementSibling ) {
-                                $label.previousElementSibling.remove();
-                            }
-
-							$label.remove(); // label itself
-						})();
+                        // remove default thumbnail crop input
+                        Array.prototype.forEach.call( document.querySelectorAll( '#thumbnail_crop, label[for="thumbnail_crop"]' ), function( $element ) {
+                            $element.parentNode.removeChild( $element );
+                        } );
 					}
 
 					if ( crop[size] ) {

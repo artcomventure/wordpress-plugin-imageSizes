@@ -39,6 +39,9 @@ msgstr "Nicht"
 msgid "Edit all available image sizes."
 msgstr "Bearbeite alle verfügbaren Bildgrößen."
 
+msgid "For all image sizes"
+msgstr "Für alle Bildgrößen"
+
 msgid "Image Sizes"
 msgstr "Bildergrößen"
 

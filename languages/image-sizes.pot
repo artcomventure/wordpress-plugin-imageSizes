@@ -39,6 +39,9 @@ msgstr ""
 msgid "Edit all available image sizes."
 msgstr ""
 
+msgid "For all image sizes"
+msgstr ""
+
 msgid "Image Sizes"
 msgstr ""
 

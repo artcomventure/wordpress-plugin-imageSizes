@@ -66,7 +66,7 @@ gulp.task( 'clear:build', function() {
 } );
 
 // ...
-gulp.task( 'build', ['clear:build', 'scss'], function() {
+gulp.task( 'build', ['clear:build', 'scss', 'po2mo'], function() {
     // collect all needed files
     gulp.src( [
         '**/*',
