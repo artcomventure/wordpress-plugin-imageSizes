@@ -5,6 +5,11 @@
 * add image sizes
 * regenerate single image
 
+## 1.3.5 - 2018-09-20
+**Fixed**
+
+* Size input labels ('Max' vs normal)
+
 ## 1.3.4 - 2018-08-09
 **Fixed**
 

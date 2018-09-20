@@ -4,7 +4,7 @@
  * Plugin Name: Image Sizes
  * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
  * Description: Edit all available image sizes.
- * Version: 1.3.4
+ * Version: 1.3.5
  * Text Domain: image-sizes
  * Author: artcom venture GmbH
  * Author URI: http://www.artcom-venture.de/
@@ -156,7 +156,7 @@ function imagesizes__admin_init() {
 				</legend>
 
 				<label for="<?php echo $name; ?>">
-					<?php _e( $settings['crop'] ? 'Width' : 'Max Width' ); ?>
+					<?php _e( 'Width' ); ?>
 				</label>
 
 				<input name="<?php echo $name; ?>" type="number" step="1"
@@ -170,7 +170,7 @@ function imagesizes__admin_init() {
 				<?php $name = "{$image_size}_size_h"; ?>
 
 				<label for="<?php echo $name; ?>">
-					<?php _e( $settings['crop'] ? 'Height' : 'Max Height' ); ?>
+					<?php _e( 'Height' ); ?>
 				</label>
 
 				<input name="<?php echo $name; ?>" type="number" step="1"
@@ -221,13 +221,11 @@ function imagesizes__admin_init() {
                         } );
 					}
 
-					if ( crop[size] ) {
-						var $label = document.querySelector( '[for="' + size + '_size_w"]' );
-						$label.innerHTML = '<?php _e( 'Width' ) ?>';
-
-						$label = document.querySelector( '[for="' + size + '_size_h"]' );
-						$label.innerHTML = '<?php _e( 'Height' ) ?>';
-					}
+                    // size input labels
+                    var $label = document.querySelector( '[for="' + size + '_size_w"]' );
+                    $label.innerHTML = (!crop[size] || crop[size] == '0') ? '<?php _e( 'Max Width' ) ?>' : '<?php _e( 'Width' ) ?>';
+                    $label = document.querySelector( '[for="' + size + '_size_h"]' );
+                    $label.innerHTML = (!crop[size] || crop[size] == '0') ? '<?php _e( 'Max Height' ) ?>' : '<?php _e( 'Height' ) ?>';
 
 					$heightInput.parentNode.appendChild( document.createElement( 'p' ) );
 
