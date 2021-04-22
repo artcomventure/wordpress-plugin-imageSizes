@@ -37,7 +37,8 @@
 .image-size__actions .button.pending:before
 {
     content: '\f463';
-    animation: rotation 2s infinite linear;
+    -webkit-animation: rotation 2s infinite linear;
+            animation: rotation 2s infinite linear;
     color: #555;
 }
 
@@ -76,9 +77,12 @@
     top: 0;
     bottom: 0;
     left: 0;
-    box-sizing: border-box; 
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box; 
     width: 0;
-    transition: width .2s;
+    -webkit-transition: width .2s;
+         -o-transition: width .2s;
+            transition: width .2s;
     color: #fff;
     background-color: #79ba49;
 }

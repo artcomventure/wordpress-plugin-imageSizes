@@ -39,7 +39,7 @@ gulp.task( 'scss', function() {
         .pipe( sass() )
         // vendor prefixes
         .pipe( autoprefixer( {
-            browsers: ['last 3 versions']
+            overrideBrowserslist: ['last 3 versions']
         } ) )
         // beautify css
         .pipe( csscomb() )
@@ -61,12 +61,14 @@ gulp.task( 'po2mo', function() {
 } );
 
 // clear build/ folder
-gulp.task( 'clear:build', function() {
+gulp.task( 'clear:build', function( done ) {
     del.sync( 'build/**/*' );
+
+    done();
 } );
 
 // ...
-gulp.task( 'build', ['clear:build', 'scss', 'po2mo'], function() {
+gulp.task( 'build', gulp.series( gulp.parallel( 'clear:build', 'scss', 'po2mo' ), doBuild = function( done ) {
     // collect all needed files
     gulp.src( [
         '**/*',
@@ -76,6 +78,7 @@ gulp.task( 'build', ['clear:build', 'scss', 'po2mo'], function() {
         '!readme.txt',
         '!gulpfile.js',
         '!package.json',
+        '!package-lock.json',
         '!.csscomb.json',
         '!.gitignore',
         '!node_modules{,/**}',
@@ -97,14 +100,16 @@ gulp.task( 'build', ['clear:build', 'scss', 'po2mo'], function() {
         .pipe( replace( /==\s(Unreleased|[0-9\s\.-]+)\s==/g, "= $1 =" ) )
         .pipe( replace( /#\s*[^\n]+/g, "== Description ==" ) )
         .pipe( gulp.dest( 'build/' ) );
-} );
+
+    done();
+} ) );
 
 /**
  * Watch tasks.
  *
  * Init watches by calling 'gulp' in terminal.
  */
-gulp.task( 'default', ['scss', 'po2mo'], function() {
-    gulp.watch( scssFiles, ['scss'] );
-    gulp.watch( poFiles, ['po2mo'] );
-} );
+gulp.task( 'default', gulp.series( gulp.parallel( 'scss', 'po2mo' ), watcher = function() {
+    gulp.watch( scssFiles, gulp.parallel( 'scss' ) );
+    gulp.watch( poFiles, gulp.parallel( 'po2mo' ) );
+} ) );

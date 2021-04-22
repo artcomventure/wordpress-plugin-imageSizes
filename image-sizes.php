@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Image Sizes
- * Plugin URI: https://github.com/artcomventure/wordpress-plugin-cropImageSizes
+ * Plugin URI: https://github.com/artcomventure/wordpress-plugin-imageSizes/tree/1.3.5
  * Description: Edit all available image sizes.
  * Version: 1.3.5
  * Text Domain: image-sizes

@@ -22,7 +22,7 @@ Last but not least: regenerate your images after changing any image size setting
 == Installation ==
 
 1. Upload files to the `/wp-content/plugins/` directory of your WordPress installation.
-  * Either [download the latest files](https://github.com/artcomventure/wordpress-plugin-imageSizes/archive/master.zip) and extract zip (optionally rename folder)
+  * Either [download files](https://github.com/artcomventure/wordpress-plugin-imageSizes/archive/refs/heads/1.3.5.zip) and extract zip (optionally rename folder)
   * ... or clone repository:
   ```
   $ cd /PATH/TO/WORDPRESS/wp-content/plugins/
@@ -45,7 +45,7 @@ If you change any settings, you must regenerate the images to apply the changes 
 
 == Plugin Updates ==
 
-Although the plugin is not _yet_ listed on https://wordpress.org/plugins/, you can use WordPress' update functionality to keep it in sync with the files from [GitHub](https://github.com/artcomventure/wordpress-plugin-imageSizes).
+Although the plugin is not _yet_ listed on https://wordpress.org/plugins/, you can use WordPress' update functionality to keep it in sync with the files from [GitHub](https://github.com/artcomventure/wordpress-plugin-imageSizes/tree/1.3.5).
 
 **Please use for this our [WordPress Repository Updater](https://github.com/artcomventure/wordpress-plugin-repoUpdater)** with the settings:
 
